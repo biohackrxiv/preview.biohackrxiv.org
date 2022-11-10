@@ -32,7 +32,8 @@ def system_log(cmd)
 end
 
 # Run tests on startup
-# system_log("cd /bhxiv-gen-pdf && ruby ./bin/gen-pdf --debug ./example/logic Japan2019")
+system_log("cp -vau /bhxiv-gen-pdf/example /tmp/")
+system_log("cd /bhxiv-gen-pdf && ruby ./bin/gen-pdf --debug /tmp/example/logic Japan2019")
 
 class BHXIV < Sinatra::Base
   helpers do
