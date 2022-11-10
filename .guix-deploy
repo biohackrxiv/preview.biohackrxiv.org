@@ -24,11 +24,11 @@ echo "puma -t 1 -e development"
 generator=$(dirname $(pwd))/bhxiv-gen-pdf
 echo $generator
 if [ ! -e $generator ]; then
-  echo "Houston we have a problem"
+  echo "Tokyo we have a problem"
 else
   rm Gemfile.lock
   echo "Set up guix environment"
-  guix shell -C --expose=$generator=/bhxiv-gen-pdf guix --network texlive-base ghc-pandoc ghc-citeproc ghc-pandoc-types librsvg nss-certs openssl curl git less vim ruby@2.6.5 nss-certs openssl ghc-pandoc-types ruby-sinatra ruby-puma ruby-slim less vim ruby-mustermann bundler ruby-nio4r
+  guix shell -C --expose=$generator=/bhxiv-gen-pdf guix --network texlive ghc-pandoc ghc-citeproc ghc-pandoc-types librsvg nss-certs openssl curl git less vim ruby@2.7.4 nss-certs openssl ghc-pandoc-types ruby-sinatra ruby-puma ruby-slim less vim ruby-mustermann bundler ruby-nio4r coreutils-minimal texlive-marginnote texlive-xcolor texlive-latex-titlesec
 fi
 
 # Start puma (see README)
