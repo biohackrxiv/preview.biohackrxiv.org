@@ -25,4 +25,5 @@ ENV UPDATE_DATE="20230630-01"
 RUN git clone "https://github.com/biohackrxiv/bhxiv-gen-pdf" --depth 1 && chmod +x /bhxiv-gen-pdf/bin/gen-pdf
 ENV PATH $PATH:/bhxiv-gen-pdf/bin
 
+WORKDIR /app
 CMD ["bundle", "exec", "puma", "-C", "config/puma.rb"]
