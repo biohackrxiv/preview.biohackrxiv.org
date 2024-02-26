@@ -1,5 +1,6 @@
-FROM ruby:3.0.2
+FROM ruby:3.3.0
 
+# Updating Pandoc version may result in a PDF build failure
 ENV PANDOC_VERSION="2.16.1"
 
 RUN wget --output-document="/pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz" "https://github.com/jgm/pandoc/releases/download/${PANDOC_VERSION}/pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz" && \
@@ -7,10 +8,10 @@ RUN wget --output-document="/pandoc-${PANDOC_VERSION}-linux-amd64.tar.gz" "https
     ln -s "/pandoc-${PANDOC_VERSION}/bin/pandoc" "/usr/local/bin"
 
 RUN apt update -y && apt install -y \
-    librsvg2-bin=2.50.3+dfsg-1 \
-    texlive-bibtex-extra=2020.20210202-3 \
-    texlive-latex-base=2020.20210202-3 \
-    texlive-latex-extra=2020.20210202-3
+    librsvg2-bin=2.54.7+dfsg-1~deb12u1 \
+    texlive-bibtex-extra=2022.20230122-4 \
+    texlive-latex-base=2022.20230122-3 \
+    texlive-latex-extra=2022.20230122-4
 
 COPY . /app/
 WORKDIR /app
@@ -20,7 +21,7 @@ EXPOSE 9292
 WORKDIR /
 
 # Change the date env value to re-download the updated gen-pdf script
-ENV UPDATE_DATE="20230630-01"
+ENV UPDATE_DATE="20240226-01"
 
 RUN git clone "https://github.com/biohackrxiv/bhxiv-gen-pdf" --depth 1 && chmod +x /bhxiv-gen-pdf/bin/gen-pdf
 ENV PATH $PATH:/bhxiv-gen-pdf/bin
