@@ -11,7 +11,8 @@ RUN apt update -y && apt install -y \
     librsvg2-bin=2.54.7+dfsg-1~deb12u1 \
     texlive-bibtex-extra=2022.20230122-4 \
     texlive-latex-base=2022.20230122-3 \
-    texlive-latex-extra=2022.20230122-4
+    texlive-latex-extra=2022.20230122-4 \
+    texlive-fonts-extra=2020.20210202-3
 
 COPY . /app/
 WORKDIR /app
