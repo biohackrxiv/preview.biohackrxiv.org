@@ -1,4 +1,4 @@
-FROM ruby:3.3.0
+FROM ruby:3.0.2
 
 # Updating Pandoc version may result in a PDF build failure
 ENV PANDOC_VERSION="2.16.1"
