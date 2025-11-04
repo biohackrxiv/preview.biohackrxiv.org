@@ -22,7 +22,7 @@ EXPOSE 9292
 WORKDIR /
 
 # Change the date env value to re-download the updated gen-pdf script
-ENV UPDATE_DATE="20240226-01"
+ENV UPDATE_DATE="20250920-01"
 
 RUN git clone "https://github.com/biohackrxiv/bhxiv-gen-pdf" --depth 1 && chmod +x /bhxiv-gen-pdf/bin/gen-pdf
 ENV PATH $PATH:/bhxiv-gen-pdf/bin

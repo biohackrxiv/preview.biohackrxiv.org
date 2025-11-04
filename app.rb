@@ -4,7 +4,7 @@ require 'sinatra'
 # require 'sinatra/json'
 require 'slim'
 require 'securerandom'
-require 'lib/list'
+# require 'lib/list'  # Commented out while remote SPARQL server is unavailable
 require 'logger'
 
 $logger = Logger.new(STDOUT)
@@ -33,7 +33,7 @@ end
 
 # Run tests on startup
 system_log("cp -vau /bhxiv-gen-pdf/example /tmp/")
-system_log("cd /bhxiv-gen-pdf && ruby ./bin/gen-pdf --debug /tmp/example/logic Japan2019")
+system_log("cd /bhxiv-gen-pdf && ruby ./bin/gen-pdf --debug /tmp/example/logic")
 
 class BHXIV < Sinatra::Base
   helpers do
@@ -60,7 +60,7 @@ class BHXIV < Sinatra::Base
       outdir_path
     end
 
-    def gen_pdf(id, journal, git_url = nil)
+    def gen_pdf(id, git_url = nil)
       # Find paper.md
       glob = "/tmp/#{id}/**/paper.md"
       $logger.debug(glob)
@@ -73,7 +73,7 @@ class BHXIV < Sinatra::Base
       outdir = create_outdir(id)
       pdf_path = "#{outdir}/paper.pdf"
       # Generate
-      system_log("gen-pdf #{paper_dir} #{journal} #{pdf_path} #{git_url}")
+      system_log("gen-pdf #{paper_dir} #{pdf_path}")
       # Return pdf_path      "/papers/#{id}/paper.pdf"
       "/papers/#{id}/paper.pdf"
     end
@@ -83,13 +83,22 @@ class BHXIV < Sinatra::Base
     set :root, File.dirname(__FILE__)
     set :protection, :except => [:json_csrf]
 
-    set :events, BHXIVUtils::PaperList.biohackathon_events()
-    set :all_papers, BHXIVUtils::PaperList.all_papers(settings.events)
-    set :all_papers_expanded, BHXIVUtils::PaperList.expand_authors(settings.all_papers)
+    # Commented out while remote SPARQL server is unavailable
+    # set :events, BHXIVUtils::PaperList.biohackathon_events()
+    # set :all_papers, BHXIVUtils::PaperList.all_papers(settings.events)
+    # set :all_papers_expanded, BHXIVUtils::PaperList.expand_authors(settings.all_papers)
 
-    set :count_events, settings.events.length
-    set :count_papers, settings.all_papers.map { |k,v| v }.flatten.length
-    set :count_authors, BHXIVUtils::PaperList.count_authors()
+    # set :count_events, settings.events.length
+    # set :count_papers, settings.all_papers.map { |k,v| v }.flatten.length
+    # set :count_authors, BHXIVUtils::PaperList.count_authors()
+
+    # Temporary fallback values
+    set :events, {}
+    set :all_papers, {}
+    set :all_papers_expanded, {}
+    set :count_events, 0
+    set :count_papers, 0
+    set :count_authors, 0
   end
 
   error CommandError do
@@ -103,29 +112,36 @@ class BHXIV < Sinatra::Base
   end
 
   get '/' do
-    @biohackathons = settings.events
-    @papers = settings.all_papers
-    @count_events = settings.count_events
-    @count_papers = settings.count_papers
-    @count_authors = settings.count_authors
+    # Commented out while remote SPARQL server is unavailable
+    # @biohackathons = settings.events
+    # @papers = settings.all_papers
+    # @count_events = settings.count_events
+    # @count_papers = settings.count_papers
+    # @count_authors = settings.count_authors
+
+    # Temporary fallback values
+    @biohackathons = {}
+    @papers = {}
+    @count_events = 0
+    @count_papers = 0
+    @count_authors = 0
     slim :index
   end
 
   post '/gen-pdf' do
     # Get form parameters
     $logger.debug(params)
-    journal = params[:journal]
     git_url = params[:repository]
     zipfile = params[:zipfile]
 
-    pdf_path = if journal
+    pdf_path = if zipfile || git_url
                  id = SecureRandom.uuid
                  if zipfile
                    stage_zipfile(id, zipfile)
-                   gen_pdf(id, journal)
+                   gen_pdf(id)
                  elsif git_url
                    stage_gitrepo(id, git_url)
-                   gen_pdf(id, journal, git_url)
+                   gen_pdf(id, git_url)
                  end
                end
 
@@ -137,20 +153,21 @@ class BHXIV < Sinatra::Base
     end
   end
 
-  get '/list.json' do
-    content_type :json
-    h = BHXIVUtils::PaperList.to_h(settings.events, settings.all_papers_expanded)
-    JSON(h)
-  end
+  # Commented out while remote SPARQL server is unavailable
+  # get '/list.json' do
+  #   content_type :json
+  #   h = BHXIVUtils::PaperList.to_h(settings.events, settings.all_papers_expanded)
+  #   JSON(h)
+  # end
 
-  get '/list' do
-    @biohackathons = settings.events
-    @papers = settings.all_papers
-    # expand authors (we could have done this more lazily)
-    @papers = settings.all_papers_expanded
-    @count_events = settings.count_events
-    @count_papers = settings.count_papers
-    @count_authors = settings.count_authors
-    slim :list
-  end
+  # get '/list' do
+  #   @biohackathons = settings.events
+  #   @papers = settings.all_papers
+  #   # expand authors (we could have done this more lazily)
+  #   @papers = settings.all_papers_expanded
+  #   @count_events = settings.count_events
+  #   @count_papers = settings.count_papers
+  #   @count_authors = settings.count_authors
+  #   slim :list
+  # end
 end
