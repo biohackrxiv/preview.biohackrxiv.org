@@ -40,15 +40,33 @@ html[lang="en"]
         div
           p
             a<> href="https://biohackrxiv.org" BioHackrXiv
-            | currently accepts manuscripts from selected events and in PDF format compiled by the
+            | accepts manuscripts in PDF format. This service converts your Markdown and BibTeX files into a properly formatted PDF using the
             a<> href="https://github.com/biohackrxiv/bhxiv-gen-pdf/" BioHackrXiv PDF Generator
-            | . This website provides the online PDF converter which processes a Markdown format file
+            | . Start with our template repository to ensure your manuscript has the correct structure and metadata.
+          p
+            strong Getting Started:
+          ol
+            li
+              | Clone the
+              a<> href="https://github.com/biohackrxiv/publication-template" GitHub template repository
+              | by clicking "Use this template" to create your own repository
+            li
+              | Edit the
+              code<>
+                | paper/paper.md
+              | file with your content and update the YAML metadata (title, authors, affiliations, event details, etc.)
+            li
+              | Make sure to update the
+              code<>
+                | git_url
+              | field in the metadata to point to your repository (not the template)
+            li
+              | Use this service by providing your repository URL below to generate a PDF preview
+          p
+            | Your
             code<>
               | paper.md
-            | and a BibTeX format file
-            code<>
-              | paper.bib
-            | in the given git repository. You can also upload your files in a zip archive. Visit
+            | file must include event metadata (biohackathon_name, biohackathon_url, biohackathon_location, git_url) in the YAML header. Visit
             a<> href="https://guide.biohackrxiv.org" journal guidelines
             | for more information on manuscript preparation.
         div
@@ -56,104 +74,18 @@ html[lang="en"]
             p
               |  Repository:
               input#repository[name="repository" size="80"]
-              |  Try with:&nbsp;
+            p
+              |  Start with the&nbsp;
+              a[href="https://github.com/biohackrxiv/publication-template"]
+                | publication template
+              |  or try with:&nbsp;
               a[href="https://github.com/biohackrxiv/bhxiv-gen-pdf"]
                 | https://github.com/biohackrxiv/bhxiv-gen-pdf
             p
               |  or upload a zip file of your repository:&nbsp;&nbsp;
               input[type="file" name="zipfile"]
-            label[for="journal"]
-              |  Compile paper for:
-            div
-              radio-group
-                div
-                  radio
-                    input[type="radio" name="journal" value="Japan2018"]
-                    |  NBDC/DBCLS BioHackathon, Matsue, Japan, 2018
-                div
-                  radio
-                    input[type="radio" name="journal" value="Japan2019"]
-                    |  NBDC/DBCLS BioHackathon, Fukuoka, Japan, 2019
-                div
-                  radio
-                    input[type="radio" name="journal" value="France2019"]
-                    |  BioHackathon Europe, Paris, France, 2019
-                div
-                  radio
-                    input[type="radio" name="journal" value="Covid2020"]
-                    |  Virtual BioHackathon Covid-2020
-                div
-                  radio
-                    input[type="radio" name="journal" value="BCC2020"]
-                    |  Bioinformatics Community Conference 2020 CollaborationFest (CoFest)
-                div
-                  radio
-                    input[type="radio" name="journal" value="BH20EU"]
-                    |  BioHackathon Europe 2020 Online
-                div
-                  radio
-                    input[type="radio" name="journal" value="BH21EU"]
-                    |  BioHackathon Europe, Barcelona, Spain, 2021
-                div
-                  radio
-                    input[type="radio" name="journal" value="BH22EU"]
-                    |  BioHackathon Europe, Paris, France, 2022
-                div
-                  radio
-                    input[type="radio" name="journal" value="BH23MENA"]
-                    |  BioHackathon MENA, KAUST, Saudi Arabia, 2023
-                div
-                  radio
-                    input[type="radio" name="journal" value="SWAT4HCLS23"]
-                    |  SWAT4HCLS, Basel, Switzerland, 2023
-                div
-                  radio
-                    input[type="radio" name="journal" value="BH23JP"]
-                    |  DBCLS BioHackathon 2023, Kagawa, Japan, 2023
-                div
-                  radio
-                    input[type="radio" name="journal" value="BH23EU"]
-                    |  BioHackathon Europe, Barcelona, Spain, 2023
-                div
-                  radio
-                    input[type="radio" name="journal" value="BLAH8"]
-                    |  Biomedical Linked Annotation Hackathon 8 (BLAH8), Chiba, Japan, 2024
-                div
-                  radio
-                    input[type="radio" name="journal" value="SWAT4HCLS24"]
-                    |  SWAT4HCLS, Leiden, The Netherlands, 2024
-                div
-                  radio
-                    input[type="radio" name="journal" value="B3EU24"]
-                    |  B-Cubed Hackathon 2024, Brussels, Belgium, 2024
-                div
-                  radio
-                    input[type="radio" name="journal" value="BH24JP"]
-                    |  DBCLS BioHackathon 2024, Fukushima, Japan, 2024
-                div
-                  radio
-                    input[type="radio" name="journal" value="BH24EU"]
-                    |  BioHackathon Europe, Barcelona, Spain, 2024
-                div
-                  radio
-                    input[type="radio" name="journal" value="SWAT4HCLS25"]
-                    |  SWAT4HCLS, Barcelona, Spain, 2025
-                div
-                  radio
-                    input[type="radio" name="journal" value="BH25JP"]
-                    |  DBCLS BioHackathon 2025, Mie, Japan, 2025
-                div
-                  radio
-                    input[type="radio" name="journal" value="BH25EU" checked="1"]
-                    |  BioHackathon Europe, Berlin, Germany, 2025
-                div
-                  radio
-                    input[type="radio" name="journal" value="SWAT4HCLS26"]
-                    |  SWAT4HCLS, Amsterdam, The Netherlands, 2026
-                div
-                  radio
-                    input[type="radio" name="journal" value="Other"]
-                    |  Other Open Source BioHackathon
+            p
+              | Event information will be extracted from your paper.md metadata (biohackathon_name, biohackathon_url, biohackathon_location).
 
             p
               div

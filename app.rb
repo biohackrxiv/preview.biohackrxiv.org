@@ -33,7 +33,7 @@ end
 
 # Run tests on startup
 system_log("cp -vau /bhxiv-gen-pdf/example /tmp/")
-system_log("cd /bhxiv-gen-pdf && ruby ./bin/gen-pdf --debug /tmp/example/logic Japan2019")
+system_log("cd /bhxiv-gen-pdf && ruby ./bin/gen-pdf --debug /tmp/example/logic")
 
 class BHXIV < Sinatra::Base
   helpers do
@@ -60,7 +60,7 @@ class BHXIV < Sinatra::Base
       outdir_path
     end
 
-    def gen_pdf(id, journal, git_url = nil)
+    def gen_pdf(id, git_url = nil)
       # Find paper.md
       glob = "/tmp/#{id}/**/paper.md"
       $logger.debug(glob)
@@ -73,7 +73,7 @@ class BHXIV < Sinatra::Base
       outdir = create_outdir(id)
       pdf_path = "#{outdir}/paper.pdf"
       # Generate
-      system_log("gen-pdf #{paper_dir} #{journal} #{pdf_path} #{git_url}")
+      system_log("gen-pdf #{paper_dir} #{pdf_path}")
       # Return pdf_path      "/papers/#{id}/paper.pdf"
       "/papers/#{id}/paper.pdf"
     end
@@ -114,18 +114,17 @@ class BHXIV < Sinatra::Base
   post '/gen-pdf' do
     # Get form parameters
     $logger.debug(params)
-    journal = params[:journal]
     git_url = params[:repository]
     zipfile = params[:zipfile]
 
-    pdf_path = if journal
+    pdf_path = if zipfile || git_url
                  id = SecureRandom.uuid
                  if zipfile
                    stage_zipfile(id, zipfile)
-                   gen_pdf(id, journal)
+                   gen_pdf(id)
                  elsif git_url
                    stage_gitrepo(id, git_url)
-                   gen_pdf(id, journal, git_url)
+                   gen_pdf(id, git_url)
                  end
                end
 
